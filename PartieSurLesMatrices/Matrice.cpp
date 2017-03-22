@@ -122,9 +122,7 @@ template<class MyType> CMatrice<MyType> &  CMatrice<MyType>::operator*(double dP
 	}
 }
 
-template<class MyType> CMatrice<MyType> &  CMatrice<MyType>::operator+(double dPara){
-
-}
+template<class MyType> CMatrice<MyType> &  CMatrice<MyType>::operator+(double dPara)
 
 
 template<class MyType> CMatrice<MyType> & CMatrice<MyType> :: operator*(CMatrice<MyType> mPara)
