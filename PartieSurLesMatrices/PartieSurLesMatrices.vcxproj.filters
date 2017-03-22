@@ -29,9 +29,6 @@
     <ClCompile Include="Cexception.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="Matrice.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
     <ClCompile Include="LireFichier.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
