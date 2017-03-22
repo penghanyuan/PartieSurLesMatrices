@@ -8,7 +8,7 @@ template<class MyType> CMatrice<MyType>::CMatrice()
 	pMATElement = NULL;
 }
 
-//jeigje
+
 template<class MyType>  CMatrice<MyType>::~CMatrice()
 {
 	int i = 0;
