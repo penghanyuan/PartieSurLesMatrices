@@ -12,13 +12,18 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Cexception.h" />
+    <ClInclude Include="Fonction.h" />
     <ClInclude Include="LireFichier.h" />
     <ClInclude Include="Matrice.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Cexception.cpp" />
+    <ClCompile Include="Fonction.cpp" />
     <ClCompile Include="LireFichier.cpp" />
     <ClCompile Include="main.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="ClassDiagram.cd" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{B28E9DE3-A1EE-47AB-BBF1-9FF514816BFC}</ProjectGuid>

@@ -24,6 +24,9 @@
     <ClInclude Include="LireFichier.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="Fonction.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Cexception.cpp">
@@ -35,5 +38,11 @@
     <ClCompile Include="main.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="Fonction.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="ClassDiagram.cd" />
   </ItemGroup>
 </Project>

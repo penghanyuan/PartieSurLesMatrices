@@ -32,7 +32,7 @@ public:
 	CMatrice<MyType> & operator/(double dPara);
 
 	//±£¡Ù
-	MyType * operator[](unsigned int ligne);
+	MyType * operator[](int ligne);
 
 
 };
@@ -57,21 +57,28 @@ template<class MyType>  CMatrice<MyType>::~CMatrice()
 
 template<class MyType>  CMatrice<MyType>::CMatrice(CMatrice &vCmat)
 {
-	int i = 0, j = 0;
-
-	//allouer la memoire
-	pMATElement = new MyType*[uiMATNbLigne];
-	for (i = 0; i < uiMATNbColonne; i++){
-		pMATElement[i] = new MyType[uiMATNbColonne];
-	}
+	unsigned int i = 0, j = 0;
 
 	//copier les data
 	uiMATNbLigne = vCmat.uiMATNbLigne;
 	uiMATNbColonne = vCmat.uiMATNbColonne;
+	//allouer la memoire
+	pMATElement = new MyType*[uiMATNbLigne];
+	if (pMATElement == NULL){
+		Cexception exc2("ERROR: fail to malloc for the row.");
+		throw exc2;
+	}
+	for (i = 0; i < uiMATNbLigne; i++){
+		pMATElement[i] = new MyType[uiMATNbColonne];
+		if (pMATElement[i] == NULL){
+			Cexception exc3("ERROR: fail to malloc for the column.");
+			throw exc3;
+		}
+	}
 
 	for (i = 0; i < uiMATNbLigne; i++){
 		for (j = 0; j < uiMATNbColonne; j++){
-			pMATElement[i][j] = vCmat[i][j];
+			pMATElement[i][j] = vCmat.pMATElement[i][j];
 		}
 	}
 }
@@ -147,24 +154,33 @@ template<class MyType>  CMatrice<MyType> & CMatrice<MyType>::MATTransposer()
 	return *matriceT;
 }
 
-template<class MyType> CMatrice<MyType> &  CMatrice<MyType>::operator*(double dPara)
+template<class MyType> void CMatrice<MyType>::MATAfficher()
 {
-	CMatrice vMat;
-	MyType *ligne = new MyType[uiMATNbColonne];
-	int i = 0, j = 0;
-	vMat.MATCreerMatrice(uiMATNbLigne, uiMATNbColonne);
+	unsigned int i, j;
 	for (i = 0; i < uiMATNbLigne; i++){
 		for (j = 0; j < uiMATNbColonne; j++){
-			ligne[j] = dPara*pMATElement[i][j];
+			printf("%d ", pMATElement[i][j]);
 		}
-		vMat.MATConcretiserMatrice(ligne, i + 1);
+		printf("\n");
+	}
+}
+template<class MyType> CMatrice<MyType> &  CMatrice<MyType>::operator*(double dPara)
+{
+	CMatrice *vMat = new CMatrice;
+	//MyType *ligne = new MyType[uiMATNbColonne];
+	int i = 0, j = 0;
+	vMat->MATCreerMatrice(uiMATNbLigne, uiMATNbColonne);
+	for (i = 0; i < uiMATNbLigne; i++){
+		for (j = 0; j < uiMATNbColonne; j++){
+			vMat->pMATElement[i][j] = dPara*pMATElement[i][j];
+		}
 	}
 	return *vMat;
 }
 
 template<class MyType> CMatrice<MyType> &  CMatrice<MyType>::operator+(CMatrice<MyType> mPara){
-	if (mPara.MATLireNbLigne() != uiMATNbLigne || mPara.MATLireNbColonne() != uiMATNbColonne){
-		Cexception exc("ERROR: Two martix should have same size!");
+	if (mPara.uiMATNbColonne != uiMATNbColonne || mPara.uiMATNbLigne != uiMATNbLigne){
+		Cexception exc("ERROR: Two martix should have same size when using +!");
 		throw exc;
 	}
 	int i = 0, j = 0;
@@ -208,4 +224,62 @@ template<class MyType> CMatrice<MyType> & CMatrice<MyType> :: operator*(CMatrice
 		}
 	}
 
+}
+
+template<class MyType> CMatrice<MyType> & CMatrice<MyType> :: operator=(CMatrice<MyType> mPara)
+{
+	if (mPara.uiMATNbColonne != uiMATNbColonne || mPara.uiMATNbLigne != uiMATNbLigne){
+		Cexception exc("ERROR: Two martix should have same size when using = !");
+		throw exc;
+	}
+
+	unsigned int i = 0, j = 0;
+
+	//copier les data
+	uiMATNbLigne = mPara.uiMATNbLigne;
+	uiMATNbColonne = mPara.uiMATNbColonne;
+	//allouer la memoire
+	pMATElement = new MyType*[uiMATNbLigne];
+	if (pMATElement == NULL){
+		Cexception exc2("ERROR: fail to malloc for the row.");
+		throw exc2;
+	}
+	for (i = 0; i < uiMATNbLigne; i++){
+		pMATElement[i] = new MyType[uiMATNbColonne];
+		if (pMATElement[i] == NULL){
+			Cexception exc3("ERROR: fail to malloc for the column.");
+			throw exc3;
+		}
+	}
+
+	for (i = 0; i < uiMATNbLigne; i++){
+		for (j = 0; j < uiMATNbColonne; j++){
+			pMATElement[i][j] = mPara.pMATElement[i][j];
+		}
+	}
+
+	return *this;
+}
+
+template<class MyType> CMatrice<MyType> &  CMatrice<MyType>::operator/(double dPara)
+{
+	if (dPara == 0){
+		Cexception exc("ERROR: Divisor can't be 0!");
+		throw exc;
+	}
+	CMatrice *vMat = new CMatrice;
+	//MyType *ligne = new MyType[uiMATNbColonne];
+	unsigned int i = 0, j = 0;
+	vMat->MATCreerMatrice(uiMATNbLigne, uiMATNbColonne);
+	for (i = 0; i < uiMATNbLigne; i++){
+		for (j = 0; j < uiMATNbColonne; j++){
+			vMat->pMATElement[i][j] = pMATElement[i][j]/dPara;
+		}
+	}
+	return *vMat;
+}
+
+template<class MyType> MyType *  CMatrice<MyType>::operator[](int dPara)
+{
+	return pMATElement[dPara];
 }
